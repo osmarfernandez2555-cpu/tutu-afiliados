@@ -188,6 +188,46 @@
       40%{transform:translateX(6px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)}
     }
     @media (max-width: 380px) { main { padding: 22px 14px 0; } .card { padding: 20px 16px; } }
+
+    /* ── TYC ── */
+    .tyc-box {
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(58,123,213,0.3);
+      border-radius: 10px; padding: 12px 16px; margin-bottom: 14px; gap: 12px;
+    }
+    .tyc-box.error-tyc { border-color: #e53935; animation: shakeX 0.45s ease; }
+    .tyc-label {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 13px; color: #b8d4f0; cursor: pointer; flex: 1;
+    }
+    .tyc-label input[type="checkbox"] {
+      display: none;
+    }
+    .tyc-custom-check {
+      width: 22px; height: 22px; border-radius: 6px; flex-shrink: 0;
+      border: 2px solid rgba(58,123,213,0.6); background: rgba(255,255,255,0.05);
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.25s ease; cursor: pointer;
+    }
+    .tyc-label input[type="checkbox"]:checked + .tyc-custom-check {
+      background: #3a7bd5; border-color: #3a7bd5;
+    }
+    .tyc-custom-check svg {
+      width: 13px; height: 13px; stroke: white; stroke-width: 3;
+      stroke-linecap: round; stroke-linejoin: round;
+      opacity: 0; transform: scale(0.5); transition: all 0.2s ease;
+    }
+    .tyc-label input[type="checkbox"]:checked + .tyc-custom-check svg {
+      opacity: 1; transform: scale(1);
+    }
+    .tyc-label strong { color: #fff; }
+    .tyc-ver-btn {
+      background: rgba(58,123,213,0.2); border: 1px solid rgba(58,123,213,0.5);
+      color: #7fb3f0; border-radius: 7px; padding: 6px 12px;
+      font-size: 12px; font-weight: 700; text-decoration: none;
+      white-space: nowrap; transition: all 0.2s;
+    }
+    .tyc-ver-btn:hover { background: rgba(58,123,213,0.4); color: #fff; }
   </style>
 </head>
 <body>
@@ -274,6 +314,20 @@
           </div>
         </div>
 
+      </div>
+
+      <!-- TÉRMINOS Y CONDICIONES -->
+      <div class="tyc-box" id="tycBox">
+        <label class="tyc-label">
+          <input type="checkbox" id="aceptaTyC" />
+          <span class="tyc-custom-check">
+            <svg viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <polyline points="1,5 4.5,8.5 11,1"/>
+            </svg>
+          </span>
+          <span>Acepto las <strong>Bases y Condiciones</strong> de la campaña</span>
+        </label>
+        <a href="bases-y-condiciones.pdf" target="_blank" class="tyc-ver-btn">📄 Ver</a>
       </div>
 
       <button type="button" class="btn-submit" id="btnEnviar">
@@ -391,6 +445,14 @@
 
     document.getElementById('btnEnviar').addEventListener('click', function(e) {
       e.preventDefault();
+      const tycBox = document.getElementById('tycBox');
+      const aceptaTyC = document.getElementById('aceptaTyC');
+      if (!aceptaTyC.checked) {
+        tycBox.classList.add('error-tyc');
+        tycBox.addEventListener('change', () => tycBox.classList.remove('error-tyc'), { once: true });
+        tycBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
       const miNombre   = document.getElementById('miNombre').value.trim();
       const miTel      = document.getElementById('miTelefono').value.trim();
       const refNombre  = document.getElementById('refNombre').value.trim();
