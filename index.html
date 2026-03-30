@@ -491,6 +491,23 @@
         contanosTxt
       );
 
+      // Guardar en Google Sheets
+      const payload = {
+        miNombre:  miNombre,
+        miTel:     miTel,
+        refNombre: refNombre,
+        refTel:    refTel,
+        queBusca:  queBusca,
+        detalle:   getDetalleTexto(),
+        contanos:  contanos
+      };
+      fetch('https://script.google.com/macros/s/AKfycbzAmE40CpcGuMFvQvruJDvD5VCqTIP0FrqmSnJN3uz6t8ir5KGP-m7zoPujqFLsLhjR/exec', {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).catch(() => {});
+
       window.open('https://wa.me/5493513454412?text=' + texto, '_blank');
       overlay.classList.add('show');
     });
